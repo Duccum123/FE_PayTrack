@@ -30,15 +30,15 @@ export function AddEmployeeForm() {
   const [department, setDepartment] = useState("");
 
   const validateFormData = (data: any) => {
-  const { name, email, gender, dateOfBirth, phone, startDate, department, position, salaryCoefficient, allowance } = data;
+  const { name, email, gender, dateOfBirth, phone, startDate, department, position, basicSalary, allowance } = data;
 
-  if (!name || !email || !gender || !dateOfBirth || !phone || !startDate || !department || !position || !salaryCoefficient || !allowance) {
+  if (!name || !email || !gender || !dateOfBirth || !phone || !startDate || !department || !position || !basicSalary || !allowance) {
     return "Vui lòng điền đầy đủ thông tin.";
   }
-  if (isNaN(Number(salaryCoefficient)) || isNaN(Number(allowance))) {
+  if (isNaN(Number(basicSalary)) || isNaN(Number(allowance))) {
     return "Lương cơ bản và trợ cấp phải là số.";
   }
-  if (Number(salaryCoefficient) <= 0 || Number(allowance) < 0) {
+  if (Number(basicSalary) <= 0 || Number(allowance) < 0) {
     return "Lương cơ bản phải lớn hơn 0 và trợ cấp không được âm.";
   }
   if (new Date(dateOfBirth) >= new Date()) {
@@ -77,7 +77,7 @@ const submitWithToken = async (url: string, data: any, token: string) => {
     phone: getValue("phone"),
     position: getValue("position"),
     department,
-    salaryCoefficient: getValue("salary"),
+    basicSalary: getValue("salary"),
     allowance: getValue("allowance"),
     gender,
     dateOfBirth: getValue("dateOfBirth"),
@@ -211,15 +211,15 @@ const submitWithToken = async (url: string, data: any, token: string) => {
                     <SelectValue placeholder="Chọn phòng ban" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="engineering">Kỹ thuật</SelectItem>
-                    <SelectItem value="marketing">Marketing</SelectItem>
-                    <SelectItem value="sales">Kinh doanh</SelectItem>
-                    <SelectItem value="hr">Nhân sự</SelectItem>
-                    <SelectItem value="finance">Tài chính</SelectItem>
-                    <SelectItem value="it">IT</SelectItem>
-                    <SelectItem value="design">Thiết kế</SelectItem>
-                    <SelectItem value="support">Hỗ trợ</SelectItem>
-                    <SelectItem value="techcare">Chăm sóc khách hàng</SelectItem>
+                    <SelectItem value="Kỹ thuật">Kỹ thuật</SelectItem>
+                    <SelectItem value="Marketing">Marketing</SelectItem>
+                    <SelectItem value="Kinh doanh">Kinh doanh</SelectItem>
+                    <SelectItem value="Nhân sự">Nhân sự</SelectItem>
+                    <SelectItem value="Tài chính">Tài chính</SelectItem>
+                    <SelectItem value="IT">IT</SelectItem>
+                    <SelectItem value="Thiết kế">Thiết kế</SelectItem>
+                    <SelectItem value="Hỗ trợ">Hỗ trợ</SelectItem>
+                    <SelectItem value="Chăm sóc khách hàng">Chăm sóc khách hàng</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

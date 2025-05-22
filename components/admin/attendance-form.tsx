@@ -17,7 +17,7 @@ type Employee = {
   phone: number;
   department: string;
   position: string;
-  salaryCoefficient: number;
+  basicSalary: number;
   allowance: number;
   gender: string;
   dateOfBirth: string;
@@ -89,7 +89,7 @@ export function AttendanceForm() {
     e.preventDefault()
     const pad = (n: number) => n.toString().padStart(2, "0")
     const dateString = date
-      ? `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T00:00:00.000+00:00`
+      ? `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T00:00:00Z`
       : ""
     const data = {
       employeeId: selectedEmployee,
@@ -121,7 +121,9 @@ export function AttendanceForm() {
         const newAccessToken = await refreshRes.json()
         localStorage.setItem("accessToken", newAccessToken.accessToken)
         alert("Failed to mark attendance. Please try again.")
-      }
+      } else if (res.status === 999) {
+            alert("Attendance exited.")
+        }
       return
     }
     const attendanceData = await res.json()

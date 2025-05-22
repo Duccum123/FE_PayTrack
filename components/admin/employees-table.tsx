@@ -24,7 +24,7 @@ type Employee = {
   phone: number;
   department: string;
   position: string;
-  salaryCoefficient: number;
+  basicSalary: number;
   allowance: number;
   gender: string;
   dateOfBirth: string;
@@ -37,10 +37,9 @@ export function EmployeesTable() {
 
   const [employees, setEmployees] = useState<Employee[]>([]);
 
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-
   const fectchEmployees = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
     const res = await fetch("http://localhost:3001/api/employee", {
       method: "GET",
       headers: {
@@ -62,7 +61,7 @@ export function EmployeesTable() {
           return
         }
         const newAccessToken = await refreshRes.json()
-        console.log("res token: ", refreshRes.json())
+        console.log("res token: ", newAccessToken)
         console.log("New access token: ", newAccessToken.accessToken)
         localStorage.setItem("accessToken", newAccessToken.accessToken)
 
@@ -120,7 +119,7 @@ export function EmployeesTable() {
         <TableHead className="whitespace-nowrap">Giới tính</TableHead>
         <TableHead className="whitespace-nowrap">Phòng ban</TableHead>
         <TableHead className="whitespace-nowrap">Vị trí</TableHead>
-        <TableHead className="whitespace-nowrap">Hệ số lương</TableHead>
+        <TableHead className="whitespace-nowrap">Lương cơ bản</TableHead>
         <TableHead className="whitespace-nowrap">Trợ cấp</TableHead>
         <TableHead className="whitespace-nowrap">Thao tác</TableHead>
       </TableRow>
@@ -146,7 +145,7 @@ export function EmployeesTable() {
           <TableCell className="whitespace-nowrap">{employee.department}</TableCell>
           <TableCell className="whitespace-nowrap">{employee.position}</TableCell>
           <TableCell className="text-right whitespace-nowrap">
-            {employee.salaryCoefficient?.toLocaleString()} VND
+            {employee.basicSalary?.toLocaleString()} VND
           </TableCell>
           <TableCell className="text-right whitespace-nowrap">
             {employee.allowance?.toLocaleString()} VND
@@ -246,8 +245,8 @@ export function EmployeesTable() {
                   <p>{employee.department}</p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Lương</p>
-                  <p>${employee.salaryCoefficient.toLocaleString()}</p>
+                  <p className="text-muted-foreground">Lương cơ bản</p>
+                  <p>${employee.basicSalary.toLocaleString()}</p>
                 </div>
               </div>
               <div className="mt-4">

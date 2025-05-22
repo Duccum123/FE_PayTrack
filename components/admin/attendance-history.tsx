@@ -90,7 +90,7 @@ export function AttendanceHistory() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Attendance</CardTitle>
+        <CardTitle>Now Attendance</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

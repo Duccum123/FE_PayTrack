@@ -2,8 +2,9 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Download, Eye } from "lucide-react"
+import { Download, Eye, Calculator } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
+import Link from "next/link"
 
 export function PayrollTable() {
   const payrollData = [
@@ -76,13 +77,13 @@ export function PayrollTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Employee</TableHead>
-              <TableHead>Department</TableHead>
-              <TableHead className="text-center">Work Days</TableHead>
-              <TableHead className="text-right">Base Salary</TableHead>
-              <TableHead className="text-right">Final Salary</TableHead>
-              <TableHead className="text-center">Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Nhân viên</TableHead>
+              <TableHead>Phòng ban</TableHead>
+              <TableHead className="text-center">Ngày công</TableHead>
+              <TableHead className="text-right">Lương cơ bản</TableHead>
+              <TableHead className="text-right">Lương thực lãnh</TableHead>
+              <TableHead className="text-center">Trạng thái</TableHead>
+              <TableHead className="text-right">Thao tác</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -100,18 +101,24 @@ export function PayrollTable() {
                     variant={item.status === "Paid" ? "default" : "outline"}
                     className={item.status === "Paid" ? "bg-green-500 hover:bg-green-600" : ""}
                   >
-                    {item.status}
+                    {item.status === "Paid" ? "Đã thanh toán" : "Chờ thanh toán"}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
+                    <Button variant="outline" size="icon" asChild>
+                      <Link href={`/admin/payroll/calculate?employee=${item.id}`}>
+                        <Calculator className="h-4 w-4" />
+                        <span className="sr-only">Tính lương</span>
+                      </Link>
+                    </Button>
                     <Button variant="outline" size="icon">
                       <Eye className="h-4 w-4" />
-                      <span className="sr-only">View</span>
+                      <span className="sr-only">Xem</span>
                     </Button>
                     <Button variant="outline" size="icon">
                       <Download className="h-4 w-4" />
-                      <span className="sr-only">Download</span>
+                      <span className="sr-only">Tải xuống</span>
                     </Button>
                   </div>
                 </TableCell>
@@ -135,35 +142,37 @@ export function PayrollTable() {
                   variant={item.status === "Paid" ? "default" : "outline"}
                   className={item.status === "Paid" ? "bg-green-500 hover:bg-green-600" : ""}
                 >
-                  {item.status}
+                  {item.status === "Paid" ? "Đã thanh toán" : "Chờ thanh toán"}
                 </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-sm mb-4">
                 <div>
-                  <p className="text-muted-foreground">Work Days</p>
+                  <p className="text-muted-foreground">Ngày công</p>
                   <p>
                     {item.workDays}/{item.totalDays}
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Base Salary</p>
+                  <p className="text-muted-foreground">Lương cơ bản</p>
                   <p>${item.baseSalary.toLocaleString()}</p>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-muted-foreground">Final Salary</p>
+                  <p className="text-muted-foreground">Lương thực lãnh</p>
                   <p className="font-medium">${item.finalSalary.toLocaleString()}</p>
                 </div>
               </div>
 
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="w-full">
-                  <Eye className="h-4 w-4 mr-2" />
-                  View
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link href={`/admin/payroll/calculate?employee=${item.id}`}>
+                    <Calculator className="h-4 w-4 mr-2" />
+                    Tính lương
+                  </Link>
                 </Button>
                 <Button variant="outline" size="sm" className="w-full">
-                  <Download className="h-4 w-4 mr-2" />
-                  Download
+                  <Eye className="h-4 w-4 mr-2" />
+                  Xem
                 </Button>
               </div>
             </CardContent>
