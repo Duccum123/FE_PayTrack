@@ -56,7 +56,6 @@ export function AttendanceForm() {
           return
         }
         const newAccessToken = await refreshRes.json()
-        console.log("res token: ", refreshRes.json())
         console.log("New access token: ", newAccessToken.accessToken)
         localStorage.setItem("accessToken", newAccessToken.accessToken)
         // Retry fetching employees with the new access token

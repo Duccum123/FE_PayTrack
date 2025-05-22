@@ -1,4 +1,5 @@
 "use client"
+import { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -6,70 +7,83 @@ import { Download, Eye, Calculator } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 
-export function PayrollTable() {
-  const payrollData = [
-    {
-      id: 1,
-      employee: "Alex Johnson",
-      department: "Engineering",
-      totalDays: 22,
-      workDays: 21,
-      baseSalary: 85000,
-      finalSalary: 7083.33,
-      status: "Paid",
-    },
-    {
-      id: 2,
-      employee: "Sarah Williams",
-      department: "Marketing",
-      totalDays: 22,
-      workDays: 22,
-      baseSalary: 78000,
-      finalSalary: 6500,
-      status: "Paid",
-    },
-    {
-      id: 3,
-      employee: "Michael Brown",
-      department: "Sales",
-      totalDays: 22,
-      workDays: 19,
-      baseSalary: 65000,
-      finalSalary: 5118.18,
-      status: "Paid",
-    },
-    {
-      id: 4,
-      employee: "Emily Davis",
-      department: "HR",
-      totalDays: 22,
-      workDays: 22,
-      baseSalary: 72000,
-      finalSalary: 6000,
-      status: "Pending",
-    },
-    {
-      id: 5,
-      employee: "David Wilson",
-      department: "Engineering",
-      totalDays: 22,
-      workDays: 20,
-      baseSalary: 75000,
-      finalSalary: 5681.82,
-      status: "Pending",
-    },
-    {
-      id: 6,
-      employee: "Jennifer Taylor",
-      department: "Finance",
-      totalDays: 22,
-      workDays: 21,
-      baseSalary: 80000,
-      finalSalary: 6363.64,
-      status: "Paid",
-    },
-  ]
+type PayrollData = {
+  _id: string,
+  employeeId : {
+    _id: string | number
+    name: string
+    email: string
+    phone: number
+    department: string
+    position: string
+    basicSalary: number
+  },
+  month: number,
+  year: number,
+  bonus: number,
+  penalty: number,
+  noteBonus: string,
+  notePenalty: string,
+  totalWorkingDays: number,
+  totalWorkingHours: number,
+  totalSalary: number
+}
 
+export function PayrollTable() {
+  const [payrollData, setPayrollData] = useState<PayrollData[]>([])
+
+  const fetchPayrolls = async () => {
+    const accessToken = localStorage.getItem("access")
+    const refreshToken = localStorage.getItem("refreshToken")
+
+    const res = await fetch("http://localhost:3001/api/salary", {
+      method : "GET",
+      headers: {
+        "Content-Type" : "application/json",
+        Authorization : `Bearer ${accessToken}`
+      },
+    })
+    if(!res.ok) {
+      console.log("Failed to fetch payrolls: ", res.statusText)
+      if (res.status === 401) {
+        // Token hết hạn => refresh token
+        const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ refreshToken }),
+        })
+        if (!refreshRes.ok) {
+          console.log("Failed to refresh token: ", refreshRes.statusText)
+          return
+        }
+        const newAccessToken = await refreshRes.json()
+        console.log("New access token: ", newAccessToken.accessToken)
+        localStorage.setItem("accessToken", newAccessToken.accessToken)
+        // Retry fetching employees with the new access token
+        const retryRes = await fetch("http://localhost:3001/api/salary", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${newAccessToken.accessToken}`,
+          },
+        })
+        if (!retryRes.ok) {
+          console.log("Failed to fetch employees: ", retryRes.statusText)
+          return
+        }
+        const data = await retryRes.json()
+        console.log(data)
+        setPayrollData(data)
+      }
+      return
+    }
+    const data = await res.json()
+    console.log(data)
+    setPayrollData(data)
+  }
+  useEffect(() => {
+      fetchPayrolls()
+    },[])
   return (
     <>
       {/* Desktop Table View */}
@@ -77,37 +91,28 @@ export function PayrollTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Nhân viên</TableHead>
-              <TableHead>Phòng ban</TableHead>
-              <TableHead className="text-center">Ngày công</TableHead>
-              <TableHead className="text-right">Lương cơ bản</TableHead>
-              <TableHead className="text-right">Lương thực lãnh</TableHead>
-              <TableHead className="text-center">Trạng thái</TableHead>
-              <TableHead className="text-right">Thao tác</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Department</TableHead>
+              <TableHead className="text-center">Working Day</TableHead>
+              <TableHead className="text-right">Basic salary</TableHead>
+              <TableHead className="text-right">Take-Home Pay</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {payrollData.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className="font-medium">{item.employee}</TableCell>
-                <TableCell>{item.department}</TableCell>
+              <TableRow key={item._id}>
+                <TableCell className="font-medium">{item.employeeId.name}</TableCell>
+                <TableCell>{item.employeeId.department}</TableCell>
                 <TableCell className="text-center">
-                  {item.workDays}/{item.totalDays}
+                  {item.totalWorkingDays}/30
                 </TableCell>
-                <TableCell className="text-right">${item.baseSalary.toLocaleString()}</TableCell>
-                <TableCell className="text-right">${item.finalSalary.toLocaleString()}</TableCell>
-                <TableCell className="text-center">
-                  <Badge
-                    variant={item.status === "Paid" ? "default" : "outline"}
-                    className={item.status === "Paid" ? "bg-green-500 hover:bg-green-600" : ""}
-                  >
-                    {item.status === "Paid" ? "Đã thanh toán" : "Chờ thanh toán"}
-                  </Badge>
-                </TableCell>
+                <TableCell className="text-right">{item.employeeId.basicSalary.toLocaleString()} VND</TableCell>
+                <TableCell className="text-right">{item.totalSalary.toLocaleString()} VND</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <Button variant="outline" size="icon" asChild>
-                      <Link href={`/admin/payroll/calculate?employee=${item.id}`}>
+                      <Link href={`/admin/payroll/calculate?employee=${item._id}`}>
                         <Calculator className="h-4 w-4" />
                         <span className="sr-only">Tính lương</span>
                       </Link>
@@ -131,41 +136,35 @@ export function PayrollTable() {
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
         {payrollData.map((item) => (
-          <Card key={item.id}>
+          <Card key={item._id}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className="font-medium">{item.employee}</p>
-                  <p className="text-sm text-muted-foreground">{item.department}</p>
+                  <p className="font-medium">{item.employeeId.name}</p>
+                  <p className="text-sm text-muted-foreground">{item.employeeId.department}</p>
                 </div>
-                <Badge
-                  variant={item.status === "Paid" ? "default" : "outline"}
-                  className={item.status === "Paid" ? "bg-green-500 hover:bg-green-600" : ""}
-                >
-                  {item.status === "Paid" ? "Đã thanh toán" : "Chờ thanh toán"}
-                </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-sm mb-4">
                 <div>
                   <p className="text-muted-foreground">Ngày công</p>
                   <p>
-                    {item.workDays}/{item.totalDays}
+                    {item.totalWorkingDays}/30
                   </p>
                 </div>
                 <div>
                   <p className="text-muted-foreground">Lương cơ bản</p>
-                  <p>${item.baseSalary.toLocaleString()}</p>
+                  <p>{item.employeeId.basicSalary.toLocaleString()} VND</p>
                 </div>
                 <div className="col-span-2">
                   <p className="text-muted-foreground">Lương thực lãnh</p>
-                  <p className="font-medium">${item.finalSalary.toLocaleString()}</p>
+                  <p className="font-medium">{item.totalSalary.toLocaleString()} VND</p>
                 </div>
               </div>
 
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" className="w-full" asChild>
-                  <Link href={`/admin/payroll/calculate?employee=${item.id}`}>
+                  <Link href={`/admin/payroll/calculate?employee=${item._id}`}>
                     <Calculator className="h-4 w-4 mr-2" />
                     Tính lương
                   </Link>

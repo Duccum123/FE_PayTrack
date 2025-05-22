@@ -1,3 +1,5 @@
+"use client"
+import { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,54 +14,73 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
 
+type Account = {
+  _id: string
+  username: string,
+  role: string,
+  name: string | undefined,
+  email: string | undefined
+  employeeId : {
+    _id: string | number
+    name: string
+    email: string
+    phone: number
+    department: string
+    position: string
+    basicSalary: number
+  },
+}
+
 export function UserAccountsTable() {
-  const accounts = [
-    {
-      id: 1,
-      name: "Alex Johnson",
-      email: "alex.johnson@paytrack.com",
-      role: "Admin",
-      department: "Engineering",
-      lastActive: "2 hours ago",
-      avatar: "AJ",
-    },
-    {
-      id: 2,
-      name: "Sarah Williams",
-      email: "sarah.williams@paytrack.com",
-      role: "Employee",
-      department: "Marketing",
-      lastActive: "1 day ago",
-      avatar: "SW",
-    },
-    {
-      id: 3,
-      name: "Michael Brown",
-      email: "michael.brown@paytrack.com",
-      role: "Employee",
-      department: "Sales",
-      lastActive: "3 hours ago",
-      avatar: "MB",
-    },
-    {
-      id: 4,
-      name: "Emily Davis",
-      email: "emily.davis@paytrack.com",
-      role: "Admin",
-      department: "HR",
-      lastActive: "Just now",
-      avatar: "ED",
-    },
-    {
-      id: 5,
-      name: "David Wilson",
-      email: "david.wilson@paytrack.com",
-      role: "Employee",
-      department: "Engineering",
-      lastActive: "5 days ago",
-      avatar: "DW",
-    },
-  ]
+  const [accounts, setAccounts] = useState<Account[]>([])
+
+  const fetchAccounts = async () => {
+    const accessToken = localStorage.getItem("accessToken")
+    const refreshToken = localStorage.getItem("refreshToken")
+
+    const res = await fetch("http://localhost:3001/api/user",{
+      method: "GET",
+      headers: {
+        "Content-Type" : "application/json",
+        Authorization : `Bearer ${accessToken}`
+      }
+    })
+    if(!res.ok) {
+      console.log("Loi khi fetch account")
+      if(res.status == 401) {
+        const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
+          method: "POST",
+          headers: {
+            "Content-Type" : "application/json",
+          },
+          body: JSON.stringify({ refreshToken })
+        })
+        if(!refreshRes.ok) {
+          console.log("loi khi refreshToken")
+          return
+        }
+        const newAccessToken = await refreshRes.json()
+        localStorage.setItem("accessToken", newAccessToken.accessToken)
+        const retryRes = await fetch("http://localhost:3001/api/user", {
+          method: "GET",
+          headers : {
+            "Content-Type" : "application/json",
+            Authorization :  `Bearer ${newAccessToken.accessToken}`
+          }
+        })
+        const data = await retryRes.json()
+        console.log(data)
+        setAccounts(data)
+      }
+      return
+    }
+    const data = await res.json()
+    console.log(data)
+    setAccounts(data)
+  }
+  useEffect(() => {
+    fetchAccounts()
+  },[])
 
   return (
     <div className="rounded-md border">
@@ -70,33 +91,31 @@ export function UserAccountsTable() {
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
             <TableHead>Department</TableHead>
-            <TableHead>Last Active</TableHead>
-            <TableHead className="w-[80px]">Actions</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {accounts.map((account) => (
-            <TableRow key={account.id}>
+            <TableRow key={account._id}>
               <TableCell>
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={`/placeholder-ava.png`} />
-                    <AvatarFallback>{account.avatar}</AvatarFallback>
+                    <AvatarFallback></AvatarFallback>
                   </Avatar>
-                  <span>{account.name}</span>
+                  <span>{account.role === "admin" ? account.name : account.employeeId.name}</span>
                 </div>
               </TableCell>
-              <TableCell>{account.email}</TableCell>
+              <TableCell>{account.role === "admin" ? account.email : account.employeeId.email}</TableCell>
               <TableCell>
                 <Badge
-                  variant={account.role === "Admin" ? "default" : "outline"}
-                  className={account.role === "Admin" ? "bg-blue-500 hover:bg-blue-600" : ""}
+                  variant={account.role === "admin" ? "default" : "outline"}
+                  className={account.role === "admin" ? "bg-blue-500 hover:bg-blue-600" : ""}
                 >
-                  {account.role}
+                  {account.role === "admin" ? "Admin" : "Employee"}
                 </Badge>
               </TableCell>
-              <TableCell>{account.department}</TableCell>
-              <TableCell>{account.lastActive}</TableCell>
+              <TableCell>{account.role === "admin" ? "Quản trị" : account.employeeId.department}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

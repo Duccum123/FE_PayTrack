@@ -110,18 +110,18 @@ export function EmployeesTable() {
         <Table className="min-w-fit">
     <TableHeader>
       <TableRow>
-        <TableHead className="whitespace-nowrap">Tên</TableHead>
-        <TableHead className="whitespace-nowrap">Số điện thoại</TableHead>
+        <TableHead className="whitespace-nowrap">Name</TableHead>
+        <TableHead className="whitespace-nowrap">Phone number</TableHead>
         <TableHead className="whitespace-nowrap">Email</TableHead>
-        <TableHead className="whitespace-nowrap">Ngày sinh</TableHead>
-        <TableHead className="whitespace-nowrap">Ngày vào làm</TableHead>
-        <TableHead className="whitespace-nowrap">Ngày tạo</TableHead>
-        <TableHead className="whitespace-nowrap">Giới tính</TableHead>
-        <TableHead className="whitespace-nowrap">Phòng ban</TableHead>
-        <TableHead className="whitespace-nowrap">Vị trí</TableHead>
-        <TableHead className="whitespace-nowrap">Lương cơ bản</TableHead>
-        <TableHead className="whitespace-nowrap">Trợ cấp</TableHead>
-        <TableHead className="whitespace-nowrap">Thao tác</TableHead>
+        <TableHead className="whitespace-nowrap">Date of birth</TableHead>
+        <TableHead className="whitespace-nowrap">Start date</TableHead>
+        <TableHead className="whitespace-nowrap">Created date</TableHead>
+        <TableHead className="whitespace-nowrap">Gender</TableHead>
+        <TableHead className="whitespace-nowrap">Department</TableHead>
+        <TableHead className="whitespace-nowrap">Position</TableHead>
+        <TableHead className="whitespace-nowrap">Basic Salary</TableHead>
+        <TableHead className="whitespace-nowrap">Allowance</TableHead>
+        <TableHead className="whitespace-nowrap">Action</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
