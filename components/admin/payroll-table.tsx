@@ -35,8 +35,8 @@ export function PayrollTable() {
   const fetchPayrolls = async () => {
     const accessToken = localStorage.getItem("access")
     const refreshToken = localStorage.getItem("refreshToken")
-
-    const res = await fetch("http://localhost:3001/api/salary", {
+    const managerId = localStorage.getItem("userId")
+    const res = await fetch("http://localhost:3001/api/salary/getByManager/" + managerId, {
       method : "GET",
       headers: {
         "Content-Type" : "application/json",
@@ -60,7 +60,7 @@ export function PayrollTable() {
         console.log("New access token: ", newAccessToken.accessToken)
         localStorage.setItem("accessToken", newAccessToken.accessToken)
         // Retry fetching employees with the new access token
-        const retryRes = await fetch("http://localhost:3001/api/salary", {
+        const retryRes = await fetch("http://localhost:3001/api/salary/getByManager/" + managerId, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

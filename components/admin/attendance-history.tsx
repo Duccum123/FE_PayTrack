@@ -35,13 +35,18 @@ export function AttendanceHistory() {
       const today = new Date()
       const date =  `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}T00:00:00.000+00:00`
       console.log(date)
+      const managerId = localStorage.getItem("userId")
+      const data = {
+        date: date,
+        managerId: managerId
+      }
       const res = await fetch("http://localhost:3001/api/attendance/date", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({date})
+        body: JSON.stringify(data)
       })
       if (!res.ok) {
         console.log("Failed to fetch employees by date: ", res.statusText)
@@ -61,13 +66,14 @@ export function AttendanceHistory() {
           console.log("New access token: ", newAccessToken.accessToken)
           localStorage.setItem("accessToken", newAccessToken.accessToken)
           // Retry fetching employees with the new access token
+          
           const retryRes = await fetch("http://localhost:3001/api/attendance/date", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${newAccessToken.accessToken}`,
             },
-            body: JSON.stringify({date})
+            body: JSON.stringify({data})
           })
           if (!retryRes.ok) {
             console.log("Failed to fetch employees: ", retryRes.statusText)

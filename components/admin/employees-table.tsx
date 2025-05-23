@@ -40,7 +40,8 @@ export function EmployeesTable() {
   const fectchEmployees = async () => {
     const accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
-    const res = await fetch("http://localhost:3001/api/employee", {
+    const managerId = localStorage.getItem("userId")
+    const res = await fetch("http://localhost:3001/api/employee/getByManager/" + managerId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +67,7 @@ export function EmployeesTable() {
         localStorage.setItem("accessToken", newAccessToken.accessToken)
 
         // Retry fetching employees with the new access token
-        const retryRes = await fetch("http://localhost:3001/api/employee", {
+        const retryRes = await fetch("http://localhost:3001/api/employee/getByManager/" + managerId, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

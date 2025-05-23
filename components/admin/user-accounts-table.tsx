@@ -37,8 +37,8 @@ export function UserAccountsTable() {
   const fetchAccounts = async () => {
     const accessToken = localStorage.getItem("accessToken")
     const refreshToken = localStorage.getItem("refreshToken")
-
-    const res = await fetch("http://localhost:3001/api/user",{
+    const managerId = localStorage.getItem('userId')
+    const res = await fetch("http://localhost:3001/api/user/getByManager/" + managerId,{
       method: "GET",
       headers: {
         "Content-Type" : "application/json",
@@ -61,7 +61,7 @@ export function UserAccountsTable() {
         }
         const newAccessToken = await refreshRes.json()
         localStorage.setItem("accessToken", newAccessToken.accessToken)
-        const retryRes = await fetch("http://localhost:3001/api/user", {
+        const retryRes = await fetch("http://localhost:3001/api/user/getByManager/" + managerId, {
           method: "GET",
           headers : {
             "Content-Type" : "application/json",

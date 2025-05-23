@@ -35,7 +35,7 @@ export default function LoginPage() {
       console.log(data)
       localStorage.setItem("accessToken", data.accessToken)
       localStorage.setItem("refreshToken", data.refreshToken)
-      localStorage.setItem("user", JSON.stringify(data.user))
+      localStorage.setItem("userId", data.user.id)
       router.push("/admin")
     } else {
       const data = await loginData.json()
