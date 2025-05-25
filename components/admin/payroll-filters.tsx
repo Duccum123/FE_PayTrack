@@ -10,30 +10,30 @@ export function PayrollFilters() {
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="grid gap-2">
-          <Label htmlFor="month">Month</Label>
+          <Label htmlFor="month">Tháng</Label>
           <Select defaultValue="5">
             <SelectTrigger id="month" className="w-full">
               <SelectValue placeholder="Chọn tháng" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">1</SelectItem>
-              <SelectItem value="2">2</SelectItem>
-              <SelectItem value="3">3</SelectItem>
-              <SelectItem value="4">4</SelectItem>
-              <SelectItem value="5">5</SelectItem>
-              <SelectItem value="6">6</SelectItem>
-              <SelectItem value="7">7</SelectItem>
-              <SelectItem value="8">8</SelectItem>
-              <SelectItem value="9">9</SelectItem>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="11">11</SelectItem>
-              <SelectItem value="12">12</SelectItem>
+              <SelectItem value="1">Tháng 1</SelectItem>
+              <SelectItem value="2">Tháng 2</SelectItem>
+              <SelectItem value="3">Tháng 3</SelectItem>
+              <SelectItem value="4">Tháng 4</SelectItem>
+              <SelectItem value="5">Tháng 5</SelectItem>
+              <SelectItem value="6">Tháng 6</SelectItem>
+              <SelectItem value="7">Tháng 7</SelectItem>
+              <SelectItem value="8">Tháng 8</SelectItem>
+              <SelectItem value="9">Tháng 9</SelectItem>
+              <SelectItem value="10">Tháng 10</SelectItem>
+              <SelectItem value="11">Tháng 11</SelectItem>
+              <SelectItem value="12">Tháng 12</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="year">Year</Label>
+          <Label htmlFor="year">Năm</Label>
           <Select defaultValue="2025">
             <SelectTrigger id="year" className="w-full">
               <SelectValue placeholder="Chọn năm" />
@@ -52,13 +52,13 @@ export function PayrollFilters() {
         </div>
 
         <div className="grid gap-2">
-          <Label htmlFor="department">Department</Label>
+          <Label htmlFor="department">Phòng ban</Label>
           <Select defaultValue="all">
             <SelectTrigger id="department" className="w-full">
               <SelectValue placeholder="Chọn phòng ban" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Department</SelectItem>
+              <SelectItem value="all">Tất cả</SelectItem>
               <SelectItem value="Kỹ thuật">Kỹ thuật</SelectItem>
               <SelectItem value="Marketing">Marketing</SelectItem>
               <SelectItem value="Kinh doanh">Kinh doanh</SelectItem>

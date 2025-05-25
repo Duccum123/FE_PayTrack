@@ -87,11 +87,12 @@ export function UserAccountsTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
+            <TableHead>Tên</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Department</TableHead>
-            <TableHead>Action</TableHead>
+            <TableHead>Vai trò</TableHead>
+            <TableHead>Phòng ban</TableHead>
+            <TableHead>Chức vụ</TableHead>
+            <TableHead>Tùy chỉnh</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -116,19 +117,20 @@ export function UserAccountsTable() {
                 </Badge>
               </TableCell>
               <TableCell>{account.role === "admin" ? "Quản trị" : account.employeeId.department}</TableCell>
+              <TableCell>{account.role === "admin" ? "Quản trị" : account.employeeId.position}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon">
                       <MoreHorizontal className="h-4 w-4" />
-                      <span className="sr-only">Actions</span>
+                      <span className="sr-only">Tùy chỉnh</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuLabel>Tùy chỉnh</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Edit User</DropdownMenuItem>
-                    <DropdownMenuItem>Reset Password</DropdownMenuItem>
+                    <DropdownMenuItem>Chỉnh sửa</DropdownMenuItem>
+                    <DropdownMenuItem>Đặt lại mật khẩu</DropdownMenuItem>
                     <DropdownMenuItem className="text-red-600">Deactivate</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

@@ -91,12 +91,12 @@ export function PayrollTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Department</TableHead>
-              <TableHead className="text-center">Working Day</TableHead>
-              <TableHead className="text-right">Basic salary</TableHead>
-              <TableHead className="text-right">Take-Home Pay</TableHead>
-              <TableHead className="text-right">Action</TableHead>
+              <TableHead>Tên</TableHead>
+              <TableHead>Phòng ban</TableHead>
+              <TableHead className="text-center">Số ngày làm</TableHead>
+              <TableHead className="text-right">Lương cơ bản</TableHead>
+              <TableHead className="text-right">Lương thực nhận</TableHead>
+              <TableHead className="text-right">Tùy chỉnh</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

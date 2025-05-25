@@ -152,61 +152,61 @@ const submitWithToken = async (url: string, data: any, token: string) => {
       <DialogTrigger asChild>
         <Button className="bg-blue-600 hover:bg-blue-700">
           <PlusCircle className="mr-2 h-4 w-4" />
-          Add
+          Thêm nhân viên
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Add Employees</DialogTitle>
-            <DialogDescription>Fill in the new employee's information. Click Save when finished.</DialogDescription>
-            <DialogDescription>After successfully creating an employee, a login account will be automatically created with the login name as email, the default password is "abc123".</DialogDescription>
+            <DialogTitle>Thêm nhân viên</DialogTitle>
+            <DialogDescription>Điền đầy đủ thông tin nhân viên. Sau đó nhấn Lưu để hoàn thành.</DialogDescription>
+            <DialogDescription>Sau khi lưu, hệ thống sẽ tự động tạo tài khoản đăng nhập cho nhân viên với tên đăng nhập là email, mật khẩu mặc định là "abc123".</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             
             <div className="space-y-2">
-                <Label htmlFor="lastName">Name</Label>
-                <Input id="lastName" placeholder="Văn A" required />
+                <Label htmlFor="lastName">Tên</Label>
+                <Input id="lastName" placeholder="Nguyễn Văn A" required />
               </div>
 
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="name@company.com" required />
+              <Input id="email" type="email" placeholder="nguyenvana@gmail.com" required />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="gender">Gender</Label>
+                <Label htmlFor="gender">Giới tính</Label>
                 <Select onValueChange={(value) => setGender(value)}>
                   <SelectTrigger id="gender">
                     <SelectValue placeholder="Chọn giới tính" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Nam">Male</SelectItem>
-                    <SelectItem value="Nữ">Female</SelectItem>
+                    <SelectItem value="Nam">Nam</SelectItem>
+                    <SelectItem value="Nữ">Nữ</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="dateOfBirth">Date of birth</Label>
+                <Label htmlFor="dateOfBirth">Ngày sinh</Label>
                 <Input id="dateOfBirth" type="date" />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone number</Label>
+                <Label htmlFor="phone">Số điện thoại</Label>
                 <Input id="phone" placeholder="0912345678" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="startDate">Start date</Label>
+                <Label htmlFor="startDate">Ngày vào làm</Label>
                 <Input id="startDate" type="date" required />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="department">Department</Label>
+                <Label htmlFor="department">Phòng ban</Label>
                 <Select onValueChange={(value) => setDepartment(value)}>
                   <SelectTrigger id="department">
                     <SelectValue placeholder="Chọn phòng ban" />
@@ -225,28 +225,28 @@ const submitWithToken = async (url: string, data: any, token: string) => {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="position">Position</Label>
+                <Label htmlFor="position">Chức vụ</Label>
                 <Input id="position" placeholder="Nhân viên" required />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="salary">Basic salary</Label>
+                <Label htmlFor="salary">Lương cơ bản</Label>
                 <Input id="salary" type="number" placeholder="10000000" required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="allowance">Allowance</Label>
+                <Label htmlFor="allowance">Trợ cấp</Label>
                 <Input id="allowance" type="number" placeholder="10000000" required />
               </div>
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-              Cancel
+              Hủy
             </Button>
             <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
-              {isLoading ? "Processing..." : "Save"}
+              {isLoading ? "Đang xử lý..." : "Lưu"}
             </Button>
           </DialogFooter>
         </form>

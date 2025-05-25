@@ -23,27 +23,27 @@ export function AdminSidebar() {
 
   const routes = [
     {
-      title: "Dashboard",
+      title: "Tổng quan",
       href: "/admin",
       icon: LayoutDashboard,
     },
     {
-      title: "Employees",
+      title: "Nhân viên",
       href: "/admin/employees",
       icon: Users,
     },
     {
-      title: "Attendance",
+      title: "Chấm công",
       href: "/admin/attendance",
       icon: Calendar,
     },
     {
-      title: "Payroll",
+      title: "Bảng lương",
       href: "/admin/payroll",
       icon: DollarSign,
     },
     {
-      title: "User Accounts",
+      title: "Tài khoản",
       href: "/admin/accounts",
       icon: UserCog,
     },
@@ -81,7 +81,7 @@ export function AdminSidebar() {
           <Button variant="ghost" className="w-full justify-start" asChild>
             <Link href="/login">
               <LogOut className="mr-2 h-5 w-5" />
-              Logout
+              Đăng xuất
             </Link>
           </Button>
         </SidebarFooter>

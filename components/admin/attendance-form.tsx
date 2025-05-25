@@ -133,15 +133,15 @@ export function AttendanceForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Mark Attendance</CardTitle>
+        <CardTitle>Chấm ngày công</CardTitle>
       </CardHeader>
       <form onSubmit={handleAddAttendance()}>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="employee">Select Employee</Label>
+          <Label htmlFor="employee">Chọn nhân viên</Label>
           <Select value={selectedEmployee} onValueChange={setSelectedEmployee}>
             <SelectTrigger id="employee">
-              <SelectValue placeholder="Select employee" />
+              <SelectValue placeholder="Chọn nhân viên" />
             </SelectTrigger>
             <SelectContent>
               {employees.map((employee) => (
@@ -154,31 +154,31 @@ export function AttendanceForm() {
         </div>
 
         <div className="space-y-2">
-          <Label>Select Date</Label>
+          <Label>Chọn ngày</Label>
           <div className="flex justify-center sm:justify-start">
             <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border max-w-full" />
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label>Attendance Status</Label>
+          <Label>Thời gian làm việc</Label>
           <RadioGroup value={status} onValueChange={setStatus} className="flex flex-wrap gap-4">
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="Present" id="present" />
-              <Label htmlFor="present">Present</Label>
+              <Label htmlFor="present">Full-time</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="Absent" id="absent" />
-              <Label htmlFor="absent">Absent</Label>
+              <Label htmlFor="absent">Nghỉ</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="Half" id="half-day" />
-              <Label htmlFor="half-day">Half Day</Label>
+              <Label htmlFor="half-day">Part-time</Label>
             </div>
           </RadioGroup>
         </div>
 
-        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">Mark Attendance</Button>
+        <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">Lưu</Button>
       </CardContent>
       </form>
     </Card>

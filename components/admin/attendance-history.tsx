@@ -96,7 +96,7 @@ export function AttendanceHistory() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Now Attendance</CardTitle>
+        <CardTitle>Hôm nay</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -117,7 +117,7 @@ export function AttendanceHistory() {
                   record.status === "Present" ? "default" : record.status === "Absent" ? "destructive" : "outline"
                 }
               >
-                {record.status === "Half" ? "Half Day" : record.status}
+                {record.status === "Half" ? "Part-time" : record.status === "Present" ? "Full-time" : record.status === "Absent" ? "Nghỉ" : "Không xác định"}
               </Badge>
             </div>
           ))}
