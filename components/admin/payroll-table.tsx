@@ -29,61 +29,9 @@ type PayrollData = {
   totalSalary: number
 }
 
-export function PayrollTable() {
-  const [payrollData, setPayrollData] = useState<PayrollData[]>([])
+export function PayrollTable({ payrollData }: { payrollData?: PayrollData[] }) {
 
-  const fetchPayrolls = async () => {
-    const accessToken = localStorage.getItem("access")
-    const refreshToken = localStorage.getItem("refreshToken")
-    const managerId = localStorage.getItem("userId")
-    const res = await fetch("http://localhost:3001/api/salary/getByManager/" + managerId, {
-      method : "GET",
-      headers: {
-        "Content-Type" : "application/json",
-        Authorization : `Bearer ${accessToken}`
-      },
-    })
-    if(!res.ok) {
-      console.log("Failed to fetch payrolls: ", res.statusText)
-      if (res.status === 401) {
-        // Token hết hạn => refresh token
-        const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken }),
-        })
-        if (!refreshRes.ok) {
-          console.log("Failed to refresh token: ", refreshRes.statusText)
-          return
-        }
-        const newAccessToken = await refreshRes.json()
-        console.log("New access token: ", newAccessToken.accessToken)
-        localStorage.setItem("accessToken", newAccessToken.accessToken)
-        // Retry fetching employees with the new access token
-        const retryRes = await fetch("http://localhost:3001/api/salary/getByManager/" + managerId, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${newAccessToken.accessToken}`,
-          },
-        })
-        if (!retryRes.ok) {
-          console.log("Failed to fetch employees: ", retryRes.statusText)
-          return
-        }
-        const data = await retryRes.json()
-        console.log(data)
-        setPayrollData(data)
-      }
-      return
-    }
-    const data = await res.json()
-    console.log(data)
-    setPayrollData(data)
-  }
-  useEffect(() => {
-      fetchPayrolls()
-    },[])
+    
   return (
     <>
       {/* Desktop Table View */}
@@ -100,7 +48,8 @@ export function PayrollTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {payrollData.map((item) => (
+            {payrollData && payrollData.length > 0 ? (
+              payrollData.map((item) => (
               <TableRow key={item._id}>
                 <TableCell className="font-medium">{item.employeeId.name}</TableCell>
                 <TableCell>{item.employeeId.department}</TableCell>
@@ -128,14 +77,22 @@ export function PayrollTable() {
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
+            ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-muted-foreground">
+                  Không có dữ liệu
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
-        {payrollData.map((item) => (
+        {payrollData && payrollData.length > 0 ? (
+          payrollData.map((item) => (
           <Card key={item._id}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
@@ -176,7 +133,14 @@ export function PayrollTable() {
               </div>
             </CardContent>
           </Card>
-        ))}
+        ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={6} className="text-center text-muted-foreground">
+              Không có dữ liệu
+            </TableCell>
+          </TableRow>
+        )}
       </div>
     </>
   )

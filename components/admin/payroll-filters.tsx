@@ -1,17 +1,70 @@
 "use client"
-
+import React from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Download, Filter } from "lucide-react"
 
-export function PayrollFilters() {
+export function PayrollFilters( {onFilter} : {onFilter: (result: any) => void}) {
+  const accessToken = localStorage.getItem("accessToken")
+  const refreshToken = localStorage.getItem("refreshToken")
+  const managerId = localStorage.getItem("userId")
+  const [selectedMonth, setSelectedMonth] = useState("")
+  const [selectedYear, setSelectedYear] = useState("")
+  const [selectedDepartment, setSelectedDepartment] = useState("")
+  const handleFilter = async () => {
+    const data = {
+      month: selectedMonth,
+      year: selectedYear,
+      department: selectedDepartment
+    }
+    console.log("Filtered Data:", data)
+    const res = await fetch("http://localhost:3001/api/salary/getByMonthAndDepartment/" + managerId, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(data)
+    })
+    if (!res.ok) {
+      if (res.status === 401) {
+        // Handle unauthorized access, e.g., refresh token or redirect to login
+        console.error("Unauthorized access.")
+        const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        })
+        if (refreshRes.ok) {
+          const newTokens = await refreshRes.json()
+          localStorage.setItem("accessToken", newTokens.accessToken)
+          return handleFilter()
+        } else {
+          console.error("Failed to refresh token:", refreshRes.statusText)
+          return
+        }
+      } else if( res.status === 405) {
+        console.log("không có dữ liệu")
+        onFilter([])
+        return
+      }
+      console.error("Failed to fetch filtered data:", res.statusText)
+      return
+    }
+    const filteredData = await res.json()
+    console.log("Filtered Data Response:", filteredData)
+    onFilter(filteredData)
+  }
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <div className="grid gap-2">
           <Label htmlFor="month">Tháng</Label>
-          <Select defaultValue="5">
+          <Select value={selectedMonth} onValueChange={setSelectedMonth}>
             <SelectTrigger id="month" className="w-full">
               <SelectValue placeholder="Chọn tháng" />
             </SelectTrigger>
@@ -34,7 +87,7 @@ export function PayrollFilters() {
 
         <div className="grid gap-2">
           <Label htmlFor="year">Năm</Label>
-          <Select defaultValue="2025">
+          <Select value={selectedYear} onValueChange={setSelectedYear}>
             <SelectTrigger id="year" className="w-full">
               <SelectValue placeholder="Chọn năm" />
             </SelectTrigger>
@@ -53,7 +106,7 @@ export function PayrollFilters() {
 
         <div className="grid gap-2">
           <Label htmlFor="department">Phòng ban</Label>
-          <Select defaultValue="all">
+          <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
             <SelectTrigger id="department" className="w-full">
               <SelectValue placeholder="Chọn phòng ban" />
             </SelectTrigger>
@@ -75,7 +128,7 @@ export function PayrollFilters() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Button variant="outline">
+        <Button variant="outline" onClick={handleFilter}>
           <Filter className="mr-2 h-4 w-4" />
           Lọc
         </Button>
