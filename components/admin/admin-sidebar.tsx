@@ -22,11 +22,11 @@ export function AdminSidebar() {
   const { isMobile } = useSidebar()
 
   const routes = [
-    {
-      title: "Tổng quan",
-      href: "/admin",
-      icon: LayoutDashboard,
-    },
+    // {
+    //   title: "Tổng quan",
+    //   href: "/admin",
+    //   icon: LayoutDashboard,
+    // },
     {
       title: "Nhân viên",
       href: "/admin/employees",
