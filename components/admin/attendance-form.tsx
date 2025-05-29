@@ -31,7 +31,6 @@ export function AttendanceForm() {
   const [selectedEmployee, setSelectedEmployee] = useState("")
   const [status, setStatus] = useState("present")
   const [employees, setEmployees] = useState<Employee[]>([])
-  const [employeesByDate, setEmployeesByDate] = useState<Employee[]>([])
   const fetchEmployees = async () => {
     const accessToken = localStorage.getItem("accessToken")
     const refreshToken = localStorage.getItem("refreshToken")
@@ -144,11 +143,17 @@ export function AttendanceForm() {
               <SelectValue placeholder="Chọn nhân viên" />
             </SelectTrigger>
             <SelectContent>
-              {employees.map((employee) => (
+              {employees.length > 0 ? (
+                employees.map((employee) => (
                 <SelectItem key={employee._id} value={employee._id.toString()}>
                   {employee.name}
                 </SelectItem>
-              ))}
+              ))
+              ) :(
+                <SelectItem value="null" disabled>
+                  Không có nhân viên nào
+                </SelectItem>
+              )}
             </SelectContent>
           </Select>
         </div>

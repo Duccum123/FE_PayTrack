@@ -126,7 +126,8 @@ export function EmployeesTable() {
       </TableRow>
     </TableHeader>
     <TableBody>
-      {employees.map((employee) => (
+      {employees.length > 0 ? (
+        employees.map((employee) => (
         <TableRow key={employee._id}>
           <TableCell className="whitespace-nowrap">
             <div className="flex items-center gap-3">
@@ -190,14 +191,22 @@ export function EmployeesTable() {
             </div>
           </TableCell>
         </TableRow>
-      ))}
+      ))
+      ) : (
+        <TableRow>
+          <TableCell colSpan={12} className="text-center text-muted-foreground">
+            Không có nhân viên nào
+          </TableCell>
+        </TableRow>
+      )}
     </TableBody>
   </Table>
       </div>
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-4">
-        {employees.map((employee) => (
+        {employees.length > 0 ? (
+          employees.map((employee) => (
           <Card key={employee._id}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -260,8 +269,14 @@ export function EmployeesTable() {
               </div>
             </CardContent>
           </Card>
-        ))}
+        ))
+        ) : (
+          <div className="text-center text-muted-foreground">
+            Không có nhân viên nào
+          </div>
+        )}
       </div>
     </div>
   )
 }
+

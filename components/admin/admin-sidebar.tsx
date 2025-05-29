@@ -78,11 +78,12 @@ export function AdminSidebar() {
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter className="border-t p-4">
-          <Button variant="ghost" className="w-full justify-start" asChild>
-            <Link href="/login">
+          <Button variant="ghost" className="w-full justify-start" onClick={() => {
+            localStorage.clear()
+            window.location.href = "/login"
+          }}>
               <LogOut className="mr-2 h-5 w-5" />
               Đăng xuất
-            </Link>
           </Button>
         </SidebarFooter>
         <SidebarRail />

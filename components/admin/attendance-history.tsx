@@ -100,7 +100,8 @@ export function AttendanceHistory() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {employeesByDate.map((record) => (
+          {employeesByDate.length > 0 ? (
+            employeesByDate.map((record) => (
             <div key={record._id} className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Avatar className="h-8 w-8">
@@ -120,7 +121,10 @@ export function AttendanceHistory() {
                 {record.status === "Half" ? "Part-time" : record.status === "Present" ? "Full-time" : record.status === "Absent" ? "Nghỉ" : "Không xác định"}
               </Badge>
             </div>
-          ))}
+          ))
+          ) :(
+            <p className="text-sm text-muted-foreground">Không có dữ liệu chấm công</p>
+          )}
         </div>
       </CardContent>
     </Card>

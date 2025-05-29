@@ -267,11 +267,17 @@ export default function CalculateSalaryPage() {
                   <SelectValue placeholder="Chọn nhân viên" />
                 </SelectTrigger>
                 <SelectContent>
-                  {employees.map((emp: Employee) => (
+                  {employees.length > 0 ? (
+                    employees.map((emp: Employee) => (
                     <SelectItem key={emp._id} value={String(emp._id)}>
                       {emp.name}
                     </SelectItem>
-                  ))}
+                  ))
+                  ) :(
+                    <SelectItem value="null" disabled>
+                      Không có nhân viên nào
+                    </SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </div>

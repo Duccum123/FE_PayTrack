@@ -96,7 +96,8 @@ export function UserAccountsTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {accounts.map((account) => (
+          {accounts.length > 0 ? (
+            accounts.map((account) => (
             <TableRow key={account._id}>
               <TableCell>
                 <div className="flex items-center gap-3">
@@ -136,7 +137,14 @@ export function UserAccountsTable() {
                 </DropdownMenu>
               </TableCell>
             </TableRow>
-          ))}
+          ))
+          ) :(
+            <TableRow>
+              <TableCell colSpan={12} className="text-center text-muted-foreground">
+                Không có tài khoản nào
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>

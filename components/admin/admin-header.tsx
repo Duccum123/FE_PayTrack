@@ -20,10 +20,7 @@ export function AdminHeader() {
       </div>
       <h1 className="ml-8 md:ml-0 text-xl font-semibold text-blue-600 md:block">PayTrack</h1>
       <div className="ml-auto flex items-center gap-4">
-        <form className="relative hidden md:block">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input type="search" placeholder="Search..." className="w-[200px] pl-8 md:w-[300px] lg:w-[400px]" />
-        </form>
+        
         <Button size="icon" variant="ghost" className="relative">
           <Bell className="h-5 w-5" />
           <span className="absolute right-1 top-1 flex h-2 w-2 rounded-full bg-red-600"></span>
