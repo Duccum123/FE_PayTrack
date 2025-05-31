@@ -40,7 +40,7 @@ export function AttendanceHistory() {
         date: date,
         managerId: managerId
       }
-      const res = await fetch("http://localhost:3001/api/attendance/date", {
+      const res = await fetch("https://paytrack-m9mp.onrender.com/api/attendance/date", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export function AttendanceHistory() {
         console.log("Failed to fetch employees by date: ", res.statusText)
         if (res.status === 401) {
           // Token hết hạn => refresh token
-          const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
+          const refreshRes = await fetch("https://paytrack-m9mp.onrender.com/api/user/refresh-token", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ refreshToken }),
@@ -67,7 +67,7 @@ export function AttendanceHistory() {
           localStorage.setItem("accessToken", newAccessToken.accessToken)
           // Retry fetching employees with the new access token
           
-          const retryRes = await fetch("http://localhost:3001/api/attendance/date", {
+          const retryRes = await fetch("https://paytrack-m9mp.onrender.com/api/attendance/date", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

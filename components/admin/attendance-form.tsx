@@ -35,7 +35,7 @@ export function AttendanceForm() {
     const accessToken = localStorage.getItem("accessToken")
     const refreshToken = localStorage.getItem("refreshToken")
     const managerId = localStorage.getItem("userId")
-    const res = await fetch("http://localhost:3001/api/employee/getByManager/" + managerId, {
+    const res = await fetch("https://paytrack-m9mp.onrender.com/api/employee/getByManager/" + managerId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export function AttendanceForm() {
       console.log("Failed to fetch employees: ", res.statusText)
       if (res.status === 401) {
         // Token hết hạn => refresh token
-        const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
+        const refreshRes = await fetch("https://paytrack-m9mp.onrender.com/api/user/refresh-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ refreshToken }),
@@ -59,7 +59,7 @@ export function AttendanceForm() {
         console.log("New access token: ", newAccessToken.accessToken)
         localStorage.setItem("accessToken", newAccessToken.accessToken)
         // Retry fetching employees with the new access token
-        const retryRes = await fetch("http://localhost:3001/api/employee/getByManager/" + managerId, {
+        const retryRes = await fetch("https://paytrack-m9mp.onrender.com/api/employee/getByManager/" + managerId, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export function AttendanceForm() {
       status,
     }
     console.log("Attendance data: ", data)
-    const res = await fetch("http://localhost:3001/api/attendance", {
+    const res = await fetch("https://paytrack-m9mp.onrender.com/api/attendance", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export function AttendanceForm() {
       console.log("Failed to add attendance: ", res.statusText)
       if (res.status === 401) {
         // Token hết hạn => refresh token
-        const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
+        const refreshRes = await fetch("https://paytrack-m9mp.onrender.com/api/user/refresh-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ refreshToken }),

@@ -38,7 +38,7 @@ export function UserAccountsTable() {
     const accessToken = localStorage.getItem("accessToken")
     const refreshToken = localStorage.getItem("refreshToken")
     const managerId = localStorage.getItem('userId')
-    const res = await fetch("http://localhost:3001/api/user/getByManager/" + managerId,{
+    const res = await fetch("https://paytrack-m9mp.onrender.com/api/user/getByManager/" + managerId,{
       method: "GET",
       headers: {
         "Content-Type" : "application/json",
@@ -48,7 +48,7 @@ export function UserAccountsTable() {
     if(!res.ok) {
       console.log("Loi khi fetch account")
       if(res.status == 401) {
-        const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
+        const refreshRes = await fetch("https://paytrack-m9mp.onrender.com/api/user/refresh-token", {
           method: "POST",
           headers: {
             "Content-Type" : "application/json",
@@ -61,7 +61,7 @@ export function UserAccountsTable() {
         }
         const newAccessToken = await refreshRes.json()
         localStorage.setItem("accessToken", newAccessToken.accessToken)
-        const retryRes = await fetch("http://localhost:3001/api/user/getByManager/" + managerId, {
+        const retryRes = await fetch("https://paytrack-m9mp.onrender.com/api/user/getByManager/" + managerId, {
           method: "GET",
           headers : {
             "Content-Type" : "application/json",

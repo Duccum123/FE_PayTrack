@@ -53,7 +53,8 @@ export function AddEmployeeForm() {
   return null;
 };
 
-const submitWithToken = async (url: string, data: any, token: string) => {
+const submitWithToken = async (url: string, data: any, managerId: any, token: string) => {
+  data.managerId = managerId; // Thêm managerId vào dữ liệu
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -94,18 +95,18 @@ const submitWithToken = async (url: string, data: any, token: string) => {
   try {
     let accessToken = localStorage.getItem("accessToken");
     const refreshToken = localStorage.getItem("refreshToken");
-
+    const managerId = localStorage.getItem("userId");
     if (!accessToken || !refreshToken) {
       alert("Vui lòng đăng nhập lại.");
       setIsLoading(false);
       return;
     }
 
-    let response = await submitWithToken("http://localhost:3001/api/employee", data, accessToken!);
+    let response = await submitWithToken("https://paytrack-m9mp.onrender.com/api/employee", data, managerId, accessToken!);
 
     if (response.status === 401) {
       // Token hết hạn => refresh token
-      const refreshRes = await fetch("http://localhost:3001/api/user/refresh-token", {
+      const refreshRes = await fetch("https://paytrack-m9mp.onrender.com/api/user/refresh-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ refreshToken }),
@@ -122,7 +123,7 @@ const submitWithToken = async (url: string, data: any, token: string) => {
       accessToken = newToken;
 
       // Thử lại với token mới
-      response = await submitWithToken("http://localhost:3001/api/employee", data, accessToken!);
+      response = await submitWithToken("https://paytrack-m9mp.onrender.com/api/employee", data, managerId, accessToken!);
       if (!response.ok) {
         alert("Có lỗi xảy ra khi thêm nhân viên mới (sau khi refresh token).");
         setIsLoading(false);

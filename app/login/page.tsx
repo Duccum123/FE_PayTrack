@@ -25,7 +25,7 @@ export default function LoginPage() {
       return
     }
     try {
-      const loginData = await fetch("http://localhost:3001/api/user/login", {
+      const loginData = await fetch("https://paytrack-m9mp.onrender.com/api/user/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -62,7 +62,7 @@ export default function LoginPage() {
     }
     try {
         const role = "admin"
-        const res = await fetch("http://localhost:3001/api/user/register", {
+        const res = await fetch("https://paytrack-m9mp.onrender.com/api/user/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password, role }),
