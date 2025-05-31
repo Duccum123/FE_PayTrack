@@ -7,13 +7,13 @@ import { Label } from "@/components/ui/label"
 import { Download, Filter } from "lucide-react"
 
 export function PayrollFilters( {onFilter} : {onFilter: (result: any) => void}) {
-  const accessToken = localStorage.getItem("accessToken")
-  const refreshToken = localStorage.getItem("refreshToken")
-  const managerId = localStorage.getItem("userId")
   const [selectedMonth, setSelectedMonth] = useState("")
   const [selectedYear, setSelectedYear] = useState("")
   const [selectedDepartment, setSelectedDepartment] = useState("")
   const handleFilter = async () => {
+    const accessToken = localStorage.getItem("accessToken")
+    const refreshToken = localStorage.getItem("refreshToken")
+    const managerId = localStorage.getItem("userId")
     const data = {
       month: selectedMonth,
       year: selectedYear,
