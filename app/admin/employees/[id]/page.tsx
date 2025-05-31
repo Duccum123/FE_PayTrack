@@ -43,10 +43,7 @@ const [employee, setEmployee] = useState<Employee>({
   createdAt: "",
 })
 
-const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
-
-  const fetchEmployee = async () => {
+  const fetchEmployee = async (accessToken: any, refreshToken: any) => {
     const res = await fetch("https://paytrack-m9mp.onrender.com/api/employee/" + id, {
       method: "GET",
       headers: {
@@ -94,7 +91,9 @@ const accessToken = localStorage.getItem("accessToken");
     setEmployee(data)
   }
   useEffect(() => {
-    fetchEmployee()
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    fetchEmployee(accessToken, refreshToken)
   }, [])
 
 
